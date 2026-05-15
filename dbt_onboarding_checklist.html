@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dbt Team Onboarding Checklist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#1B3A6B', light: '#2A4F8F', dark: '#132A4F', faint: '#E8EDF5' },
+            accent: { DEFAULT: '#F97316', light: '#FB923C', dark: '#EA580C', faint: '#FFF3E8' },
+            surface: { DEFAULT: '#FFFFFF', bg: '#F8FAFC' },
+            success: { DEFAULT: '#22C55E', light: '#DCFCE7' },
+            muted: { DEFAULT: '#64748B', light: '#94A3B8' },
+            border: { DEFAULT: '#E2E8F0' },
+            destructive: { DEFAULT: '#EF4444', light: '#FEE2E2' }
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1B3A6B;
+      --accent: #F97316;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --success: #22C55E;
+      --muted: #64748B;
+      --border: #E2E8F0;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: #1e293b; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .tab-content { display: none; opacity: 0; transform: translateY(8px); }
+    .tab-content.active { display: block; animation: fadeSlideIn 0.3s ease forwards; }
+    @keyframes fadeSlideIn { to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideDown { from { max-height: 0; opacity: 0; } to { max-height: 60px; opacity: 1; } }
+    .section-complete-banner { animation: slideDown 0.4s ease forwards; overflow: hidden; }
+    .check-box { width: 22px; height: 22px; border: 2px solid var(--primary); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease; flex-shrink: 0; }
+    .check-box.checked { background: var(--primary); border-color: var(--primary); }
+    .check-box.checked svg { opacity: 1; transform: scale(1); }
+    .check-box svg { opacity: 0; transform: scale(0.5); transition: all 0.2s ease; }
+    .task-text.checked { text-decoration: line-through; color: var(--muted); }
+    .progress-ring-circle { transition: stroke-dashoffset 0.6s ease; }
+    .code-pill { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; background: #1e293b; color: #fb923c; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+    .tabs-scroll::-webkit-scrollbar { display: none; }
+    .tabs-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    .timeline-line { position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px; background: var(--border); }
+    .pipeline-line { position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+    .toast { animation: toastIn 0.3s ease, toastOut 0.3s ease 2s forwards; }
+    @keyframes toastIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+    @media print { .no-print { display: none !important; } }
+  </style>
+</head>
+<body data-id="0" class="min-h-screen">
+  <app-icon data-id="1" hidden data-icon="clipboard-list" data-palette="Blue"></app-icon>
+
+  <!-- HEADER -->
+  <header data-id="2" id="header-bar-a1b2" class="sticky top-0 z-50 bg-primary shadow-lg no-print">
+    <div data-id="3" class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-3 flex-wrap md:flex-nowrap">
+      <!-- Logo -->
+      <div data-id="4" class="flex items-center gap-2 flex-shrink-0">
+        <svg data-id="5" width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <rect data-id="6" x="4" y="4" width="28" height="28" rx="6" fill="#F97316" />
+          <path data-id="7" d="M18 8L26 18L18 28L10 18Z" fill="#1B3A6B" opacity="0.9"/>
+          <path data-id="8" d="M18 12L22 18L18 24L14 18Z" fill="#FFFFFF"/>
+        </svg>
+        <span data-id="9" class="text-white font-bold text-lg hidden sm:inline">dbt Onboarding Tracker</span>
+        <span data-id="10" class="text-white font-bold text-base sm:hidden">dbt Onboard</span>
+      </div>
+      <!-- Name Input -->
+      <div data-id="11" class="order-3 md:order-2 w-full md:w-auto md:flex-1 md:max-w-xs">
+        <input data-id="12" id="name-input-c3d4" type="text" placeholder="Enter your name..." class="w-full px-3 py-2 rounded-lg bg-primary-light border border-white/20 text-white placeholder-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent" />
+      </div>
+      <!-- Progress Ring -->
+      <div data-id="13" id="progress-badge-e5f6" class="order-2 md:order-3 flex items-center gap-3 flex-shrink-0">
+        <span data-id="14" id="progress-text-g7h8" class="text-white/90 text-sm font-medium whitespace-nowrap tabular-nums">0 / 0</span>
+        <div data-id="15" class="relative w-11 h-11">
+          <svg data-id="16" width="44" height="44" viewBox="0 0 44 44" class="transform -rotate-90">
+            <circle data-id="17" cx="22" cy="22" r="18" stroke="rgba(255,255,255,0.15)" stroke-width="4" fill="none" />
+            <circle data-id="18" id="progress-ring-i9j0" cx="22" cy="22" r="18" stroke="#F97316" stroke-width="4" fill="none" stroke-linecap="round" class="progress-ring-circle" stroke-dasharray="113.1" stroke-dashoffset="113.1" />
+          </svg>
+          <span data-id="19" id="progress-pct-k1l2" class="absolute inset-0 flex items-center justify-center text-white text-xs font-bold tabular-nums">0%</span>
+        </div>
+      </div>
+    </div>
+    <!-- Full-width progress bar -->
+    <div data-id="20" class="w-full h-1 bg-primary-dark">
+      <div data-id="21" id="progress-bar-m3n4" class="h-full bg-accent transition-all duration-500 ease-out" style="width:0%"></div>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <nav data-id="22" id="tab-nav-o5p6" class="sticky top-[76px] md:top-[68px] z-40 bg-surface-bg border-b border-border no-print">
+    <div data-id="23" class="max-w-7xl mx-auto px-4 md:px-6 py-3">
+      <div data-id="24" class="flex gap-2 tabs-scroll overflow-x-auto">
+        <button data-id="25" data-tab="pre-arrival" class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all min-h-[44px]">
+          <span data-id="26">🏁</span><span data-id="27" class="hidden sm:inline">Pre-Arrival</span><span data-id="28" class="sm:hidden">Pre</span><span data-id="29" class="tab-count text-xs opacity-70 tabular-nums"></span>
+        </button>
+        <button data-id="30" data-tab="day1" class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all min-h-[44px]">
+          <span data-id="31">📦</span><span data-id="32" class="hidden sm:inline">Day 1 Setup</span><span data-id="33" class="sm:hidden">Day 1</span><span data-id="34" class="tab-count text-xs opacity-70 tabular-nums"></span>
+        </button>
+        <button data-id="35" data-tab="day23" class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all min-h-[44px]">
+          <span data-id="36">🗺️</span><span data-id="37" class="hidden sm:inline">Day 2–3 Orient</span><span data-id="38" class="sm:hidden">Day 2–3</span><span data-id="39" class="tab-count text-xs opacity-70 tabular-nums"></span>
+        </button>
+        <button data-id="40" data-tab="day45" class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all min-h-[44px]">
+          <span data-id="41">✏️</span><span data-id="42" class="hidden sm:inline">Day 4–5 First PR</span><span data-id="43" class="sm:hidden">Day 4–5</span><span data-id="44" class="tab-count text-xs opacity-70 tabular-nums"></span>
+        </button>
+        <button data-id="45" data-tab="norms" class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all min-h-[44px]">
+          <span data-id="46">📐</span><span data-id="47" class="hidden sm:inline">Team Norms</span><span data-id="48" class="sm:hidden">Norms</span><span data-id="49" class="tab-count text-xs opacity-70 tabular-nums"></span>
+        </button>
+        <button data-id="50" data-tab="learning" class="tab-btn flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all min-h-[44px]">
+          <span data-id="51">🚀</span><span data-id="52" class="hidden sm:inline">Learning Path</span><span data-id="53" class="sm:hidden">Learn</span><span data-id="54" class="tab-count text-xs opacity-70 tabular-nums"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main data-id="55" class="max-w-4xl mx-auto px-4 md:px-6 py-6 md:py-10">
+
+    <!-- TAB 1: Pre-Arrival -->
+    <section data-id="56" id="tab-pre-arrival" class="tab-content">
+      <div data-id="57" class="mb-6">
+        <h2 data-id="58" id="heading-pre-q7r8" class="text-xl md:text-2xl font-bold text-primary">🏁 Pre-Arrival <span data-id="59" class="text-muted font-normal text-base">(Manager Tasks)</span></h2>
+        <p data-id="60" class="text-muted text-sm mt-1">Complete these before the new hire's first day</p>
+      </div>
+      <div data-id="61" id="banner-pre-s9t0" class="bg-accent-faint border border-accent/30 rounded-xl px-4 py-3 mb-6 flex items-start gap-3">
+        <span data-id="62" class="text-2xl flex-shrink-0">👋</span>
+        <p data-id="63" class="text-sm text-primary font-medium">Manager / Tech Lead — complete all items below before Day 1.</p>
+      </div>
+      <div data-id="64" class="mb-4">
+        <h3 data-id="65" class="text-sm font-semibold text-muted uppercase tracking-wider mb-3 flex items-center gap-2"><i data-id="66" data-lucide="shield-check" class="w-4 h-4"></i> Access &amp; Permissions</h3>
+        <div data-id="67" id="group-pre-access" class="space-y-2"></div>
+        <div data-id="68" id="complete-pre-access" class="hidden section-complete-banner mt-3 bg-success-light border border-success/30 rounded-lg px-4 py-2 text-success font-semibold text-sm flex items-center gap-2"><i data-id="69" data-lucide="check-circle-2" class="w-4 h-4"></i> Section Complete!</div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Day 1 -->
+    <section data-id="70" id="tab-day1" class="tab-content">
+      <div data-id="71" class="mb-6">
+        <h2 data-id="72" id="heading-day1-u1v2" class="text-xl md:text-2xl font-bold text-primary">📦 Day 1 — Environment Setup</h2>
+        <p data-id="73" class="text-muted text-sm mt-1">Get your local environment running</p>
+      </div>
+      <div data-id="74" id="group-day1-steps" class="space-y-2 mb-6"></div>
+      <div data-id="75" id="complete-day1-steps" class="hidden section-complete-banner mb-6 bg-success-light border border-success/30 rounded-lg px-4 py-2 text-success font-semibold text-sm flex items-center gap-2"><i data-id="76" data-lucide="check-circle-2" class="w-4 h-4"></i> Section Complete!</div>
+      <!-- Code Block -->
+      <div data-id="77" id="code-block-w3x4" class="rounded-xl overflow-hidden shadow-md">
+        <div data-id="78" class="bg-gray-900 px-4 py-2 flex items-center justify-between">
+          <span data-id="79" class="text-xs text-gray-400 mono">profiles.yml — Dev Target Example</span>
+          <button data-id="80" id="copy-code-y5z6" class="text-gray-400 hover:text-white transition flex items-center gap-1 text-xs"><i data-id="81" data-lucide="copy" class="w-3.5 h-3.5"></i> Copy</button>
+        </div>
+        <pre data-id="82" class="bg-gray-950 px-4 py-4 overflow-x-auto text-sm leading-relaxed mono"><code data-id="83"><span data-id="84" class="text-gray-500"># profiles.yml — Dev Target Example</span>
+<span data-id="85" class="text-accent">my_dbt_project</span>:
+  <span data-id="86" class="text-blue-400">target</span>: dev
+  <span data-id="87" class="text-blue-400">outputs</span>:
+    <span data-id="88" class="text-accent">dev</span>:
+      <span data-id="89" class="text-blue-400">type</span>: snowflake
+      <span data-id="90" class="text-blue-400">account</span>: your_account
+      <span data-id="91" class="text-blue-400">user</span>: <span data-id="92" class="text-green-400">"{{ env_var('DBT_USER') }}"</span>
+      <span data-id="93" class="text-blue-400">password</span>: <span data-id="94" class="text-green-400">"{{ env_var('DBT_PASSWORD') }}"</span>
+      <span data-id="95" class="text-blue-400">role</span>: TRANSFORMER_DEV
+      <span data-id="96" class="text-blue-400">database</span>: DEV_DB
+      <span data-id="97" class="text-blue-400">warehouse</span>: COMPUTE_WH
+      <span data-id="98" class="text-blue-400">schema</span>: <span data-id="99" class="text-green-400">"dbt_{{ env_var('DBT_USER') }}"</span>
+      <span data-id="100" class="text-blue-400">threads</span>: <span data-id="101" class="text-purple-400">4</span></code></pre>
+      </div>
+    </section>
+
+    <!-- TAB 3: Day 2–3 -->
+    <section data-id="102" id="tab-day23" class="tab-content">
+      <div data-id="103" class="mb-6">
+        <h2 data-id="104" id="heading-day23-a2b3" class="text-xl md:text-2xl font-bold text-primary">🗺️ Day 2–3 — Project Orientation</h2>
+        <p data-id="105" class="text-muted text-sm mt-1">Understand the codebase and data landscape</p>
+      </div>
+      <div data-id="106" class="mb-8">
+        <h3 data-id="107" class="text-sm font-semibold text-muted uppercase tracking-wider mb-3 flex items-center gap-2"><i data-id="108" data-lucide="folder-search" class="w-4 h-4"></i> Codebase Exploration</h3>
+        <div data-id="109" id="group-day23-codebase" class="space-y-2"></div>
+        <div data-id="110" id="complete-day23-codebase" class="hidden section-complete-banner mt-3 bg-success-light border border-success/30 rounded-lg px-4 py-2 text-success font-semibold text-sm flex items-center gap-2"><i data-id="111" data-lucide="check-circle-2" class="w-4 h-4"></i> Section Complete!</div>
+      </div>
+      <div data-id="112">
+        <h3 data-id="113" class="text-sm font-semibold text-muted uppercase tracking-wider mb-3 flex items-center gap-2"><i data-id="114" data-lucide="brain" class="w-4 h-4"></i> Key Concepts to Understand</h3>
+        <div data-id="115" id="group-day23-concepts" class="space-y-2"></div>
+        <div data-id="116" id="complete-day23-concepts" class="hidden section-complete-banner mt-3 bg-success-light border border-success/30 rounded-lg px-4 py-2 text-success font-semibold text-sm flex items-center gap-2"><i data-id="117" data-lucide="check-circle-2" class="w-4 h-4"></i> Section Complete!</div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Day 4–5 -->
+    <section data-id="118" id="tab-day45" class="tab-content">
+      <div data-id="119" class="mb-6">
+        <h2 data-id="120" id="heading-day45-c4d5" class="text-xl md:text-2xl font-bold text-primary">✏️ Day 4–5 — First Contribution</h2>
+        <p data-id="121" class="text-muted text-sm mt-1">Open your first pull request</p>
+      </div>
+      <div data-id="122" class="relative">
+        <div data-id="123" id="group-day45-pr" class="space-y-2 relative"></div>
+        <div data-id="124" id="complete-day45-pr" class="hidden section-complete-banner mt-3 bg-success-light border border-success/30 rounded-lg px-4 py-2 text-success font-semibold text-sm flex items-center gap-2"><i data-id="125" data-lucide="check-circle-2" class="w-4 h-4"></i> Section Complete!</div>
+      </div>
+      <!-- Milestone Callout -->
+      <div data-id="126" id="milestone-e6f7" class="mt-8 bg-accent-faint border border-accent/30 rounded-xl p-5 flex items-start gap-4">
+        <div data-id="127" class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+          <i data-id="128" data-lucide="trophy" class="w-6 h-6 text-accent"></i>
+        </div>
+        <div data-id="129">
+          <h4 data-id="130" class="font-bold text-primary text-base mb-1">Milestone Unlocked!</h4>
+          <p data-id="131" class="text-sm text-muted">Completing your first PR means you're now a contributor to the team's data platform. Great work!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: Team Norms -->
+    <section data-id="132" id="tab-norms" class="tab-content">
+      <div data-id="133" class="mb-6">
+        <h2 data-id="134" id="heading-norms-g8h9" class="text-xl md:text-2xl font-bold text-primary">📐 Team Norms &amp; Resources</h2>
+        <p data-id="135" class="text-muted text-sm mt-1">Conventions, standards, and where to get help</p>
+      </div>
+      <!-- Conventions Table -->
+      <div data-id="136" class="mb-10">
+        <h3 data-id="137" class="text-sm font-semibold text-muted uppercase tracking-wider mb-3 flex items-center gap-2"><i data-id="138" data-lucide="book-open" class="w-4 h-4"></i> Team Conventions</h3>
+        <div data-id="139" class="overflow-x-auto rounded-xl border border-border shadow-sm">
+          <table data-id="140" class="w-full text-sm">
+            <thead data-id="141">
+              <tr data-id="142" class="bg-primary text-white">
+                <th data-id="143" class="text-left px-4 py-3 font-semibold">Area</th>
+                <th data-id="144" class="text-left px-4 py-3 font-semibold">Convention</th>
+                <th data-id="145" class="text-left px-4 py-3 font-semibold hidden md:table-cell">Example</th>
+              </tr>
+            </thead>
+            <tbody data-id="146" id="conventions-table-i0j1" class="divide-y divide-border"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Resources Grid -->
+      <div data-id="147">
+        <h3 data-id="148" class="text-sm font-semibold text-muted uppercase tracking-wider mb-3 flex items-center gap-2"><i data-id="149" data-lucide="link" class="w-4 h-4"></i> Key Resources</h3>
+        <div data-id="150" id="resources-grid-k2l3" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- TAB 6: Learning Path -->
+    <section data-id="151" id="tab-learning" class="tab-content">
+      <div data-id="152" class="mb-6">
+        <h2 data-id="153" id="heading-learn-m4n5" class="text-xl md:text-2xl font-bold text-primary">🚀 Learning Path</h2>
+        <p data-id="154" class="text-muted text-sm mt-1">Your growth roadmap beyond Week 1</p>
+      </div>
+      <!-- Timeline -->
+      <div data-id="155" id="timeline-o6p7" class="relative mb-10"></div>
+      <div data-id="156" id="complete-learning-timeline" class="hidden section-complete-banner mb-8 bg-success-light border border-success/30 rounded-lg px-4 py-2 text-success font-semibold text-sm flex items-center gap-2"><i data-id="157" data-lucide="check-circle-2" class="w-4 h-4"></i> Section Complete!</div>
+      <!-- Week 1 Completion -->
+      <div data-id="158" id="week1-card-q8r9" class="bg-white border border-border rounded-xl shadow-md overflow-hidden">
+        <div data-id="159" class="bg-primary px-5 py-4">
+          <h3 data-id="160" class="text-white font-bold text-base flex items-center gap-2">🎯 First-Week Goals — Can you check all of these?</h3>
+        </div>
+        <div data-id="161" class="p-5">
+          <div data-id="162" id="group-learning-week1" class="space-y-2"></div>
+          <div data-id="163" id="complete-learning-week1" class="hidden section-complete-banner mt-3 bg-success-light border border-success/30 rounded-lg px-4 py-2 text-success font-semibold text-sm flex items-center gap-2"><i data-id="164" data-lucide="check-circle-2" class="w-4 h-4"></i> All Week 1 Goals Complete! 🎉</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer data-id="165" id="footer-s0t1" class="border-t border-border bg-white py-5 no-print">
+    <div data-id="166" class="max-w-4xl mx-auto px-4 md:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span data-id="167" class="text-muted text-xs">Built for dbt Analytics Engineers</span>
+      <div data-id="168" class="flex items-center gap-3">
+        <button data-id="169" id="reset-btn-u2v3" class="px-4 py-2 rounded-lg border border-border text-muted text-xs font-medium hover:border-destructive hover:text-destructive hover:bg-destructive-light transition min-h-[44px] flex items-center gap-1.5">
+          <i data-id="170" data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Progress
+        </button>
+        <button data-id="171" id="share-btn-w4x5" class="px-4 py-2 rounded-lg bg-primary text-white text-xs font-medium hover:bg-primary-light transition min-h-[44px] flex items-center gap-1.5">
+          <i data-id="172" data-lucide="share-2" class="w-3.5 h-3.5"></i> Share
+        </button>
+      </div>
+      <span data-id="173" class="text-muted text-xs">Made by Zoty De La Mota</span>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div data-id="174" id="toast-y6z7" class="fixed bottom-6 right-6 z-[100] hidden">
+    <div data-id="175" class="bg-primary text-white px-4 py-3 rounded-lg shadow-xl text-sm font-medium toast flex items-center gap-2">
+      <i data-id="176" data-lucide="check" class="w-4 h-4"></i>
+      <span data-id="177" id="toast-msg-a8b9">Link copied!</span>
+    </div>
+  </div>
+
+  <script>
+    // ========== DATA ==========
+    const TABS = ['pre-arrival','day1','day23','day45','norms','learning'];
+
+    const CHECKLIST_DATA = {
+      'pre-access': {
+        tab: 'pre-arrival',
+        items: [
+          { id: 'pre1', text: 'Grant data warehouse access (Snowflake / BigQuery / Redshift) with a personal dev schema' },
+          { id: 'pre2', text: 'Add to GitHub / GitLab org and dbt repository with write access' },
+          { id: 'pre3', text: 'Invite to dbt Cloud and assign to the correct project' },
+          { id: 'pre4', text: 'Share credentials: warehouse, dbt Cloud, Slack/Teams data channels, BI tool' },
+          { id: 'pre5', text: 'Create personal developer schema', code: 'dbt_firstname_lastname' },
+          { id: 'pre6', text: 'Share this guide, internal wiki, and dbt Developer Hub link' },
+          { id: 'pre7', text: 'Schedule onboarding sessions: codebase walkthrough, data model overview, team norms review' }
+        ]
+      },
+      'day1-steps': {
+        tab: 'day1',
+        numbered: true,
+        items: [
+          { id: 'd1s1', text: 'Install prerequisites: Python 3.8+, pip, git, VS Code + dbt Power User extension' },
+          { id: 'd1s2', text: 'Clone the dbt repository', code: 'git clone https://github.com/org/dbt-project.git' },
+          { id: 'd1s3', text: 'Create and activate a Python virtual environment', code: 'python -m venv .venv && source .venv/bin/activate' },
+          { id: 'd1s4', text: 'Install dbt and adapter', code: 'pip install dbt-core dbt-snowflake' },
+          { id: 'd1s5', text: 'Run dbt deps to install all packages', code: 'dbt deps' },
+          { id: 'd1s6', text: 'Configure ~/.dbt/profiles.yml with your personal dev target', code: '~/.dbt/profiles.yml' },
+          { id: 'd1s7', text: 'Run dbt debug to confirm warehouse connection ✅', code: 'dbt debug' },
+          { id: 'd1s8', text: 'Run first successful build', code: 'dbt build --select staging+ --target dev' },
+          { id: 'd1s9', text: 'Generate and browse docs', code: 'dbt docs generate && dbt docs serve' }
+        ]
+      },
+      'day23-codebase': {
+        tab: 'day23',
+        items: [
+          { id: 'd23c1', text: 'Walk through the full folder structure with a senior team member (models/, macros/, snapshots/, tests/)' },
+          { id: 'd23c2', text: 'Review all sources.yml files — understand every raw data source available' },
+          { id: 'd23c3', text: 'Identify the 5 most important mart models (fct_ and dim_) and trace their lineage in the DAG' },
+          { id: 'd23c4', text: 'Read 3 staging models, 1 intermediate model, and 1 mart model end-to-end' },
+          { id: 'd23c5', text: 'Understand the team\'s materialization strategy (view vs. table vs. incremental per layer)' },
+          { id: 'd23c6', text: 'Review existing macros and understand the most commonly used ones' },
+          { id: 'd23c7', text: 'Review snapshot models — understand which entities are tracked historically (SCD2)' },
+          { id: 'd23c8', text: 'Run dbt test and review any existing test failures or warnings', code: 'dbt test' }
+        ]
+      },
+      'day23-concepts': {
+        tab: 'day23',
+        items: [
+          { id: 'd23k1', text: 'I can explain the difference between source() and ref()', icon: 'lightbulb' },
+          { id: 'd23k2', text: 'I can trace a mart model\'s full lineage back to raw sources in the DAG', icon: 'lightbulb' },
+          { id: 'd23k3', text: 'I understand how staging models differ from intermediate and mart models', icon: 'lightbulb' },
+          { id: 'd23k4', text: 'I know where to find and how to read the team\'s sources.yml', icon: 'lightbulb' },
+          { id: 'd23k5', text: 'I can explain what a snapshot does and why SCD2 matters', icon: 'lightbulb' }
+        ]
+      },
+      'day45-pr': {
+        tab: 'day45',
+        numbered: true,
+        pipeline: true,
+        items: [
+          { id: 'd45p1', text: 'Create a new git branch', code: 'git checkout -b feature/add-stg-new-entity' },
+          { id: 'd45p2', text: 'Create a new staging model following team naming convention', code: 'stg_source__entity.sql' },
+          { id: 'd45p3', text: 'Write column-level documentation in _models.yml' },
+          { id: 'd45p4', text: 'Add generic tests: not_null, unique, accepted_values on appropriate columns' },
+          { id: 'd45p5', text: 'Run locally', code: 'dbt build --select +stg_new_entity --target dev' },
+          { id: 'd45p6', text: 'Verify all tests pass', code: 'dbt test --select stg_new_entity' },
+          { id: 'd45p7', text: 'Open a Pull Request — CI pipeline will trigger automatically' },
+          { id: 'd45p8', text: 'Request review from a senior team member' },
+          { id: 'd45p9', text: 'Address review feedback, push changes, CI re-runs' },
+          { id: 'd45p10', text: '🎉 Merge once approved and CI passes!' }
+        ]
+      },
+      'learning-timeline': {
+        tab: 'learning',
+        items: [
+          { id: 'lt1', text: 'Intermediate models and mart design', badge: 'Week 2', detail: 'Section 3 of the guide; dbt best practices blog' },
+          { id: 'lt2', text: 'Macros and DRY SQL patterns', badge: 'Week 3', detail: 'Section 4 of the guide; dbt-utils source code' },
+          { id: 'lt3', text: 'Snapshots and historical tracking', badge: 'Week 4', detail: 'Section 5 of the guide; dbt snapshot docs' },
+          { id: 'lt4', text: 'CI/CD and orchestration deep dive', badge: 'Month 2', detail: 'Section 10 of the guide; Astronomer Cosmos docs' },
+          { id: 'lt5', text: 'dbt Mesh and Semantic Layer', badge: 'Month 3', detail: 'Section 7 of the guide; MetricFlow docs' },
+          { id: 'lt6', text: 'Community involvement', badge: 'Ongoing', detail: 'dbt Slack, Coalesce conference talks on YouTube' }
+        ]
+      },
+      'learning-week1': {
+        tab: 'learning',
+        items: [
+          { id: 'lw1', text: 'Successfully run dbt build locally against my dev schema', code: 'dbt build' },
+          { id: 'lw2', text: 'Navigate the DAG in dbt docs and explain the lineage of any mart model' },
+          { id: 'lw3', text: 'Write a new staging model from scratch following team conventions' },
+          { id: 'lw4', text: 'Write column-level tests and documentation for a model' },
+          { id: 'lw5', text: 'Open, review, and get merged my first Pull Request' },
+          { id: 'lw6', text: 'Understand the CI/CD pipeline and what happens when a PR is opened' },
+          { id: 'lw7', text: 'Know where to ask questions: Slack channels, PR reviews, this guide' }
+        ]
+      }
+    };
+
+    const CONVENTIONS = [
+      { area: 'Branching', convention: 'feature/description or fix/description', example: 'feature/add-stg-orders' },
+      { area: 'Commit Messages', convention: 'Imperative mood, present tense', example: '"Add stg_payments staging model"' },
+      { area: 'PR Size', convention: '< 400 lines changed per PR', example: 'Split large refactors into multiple PRs' },
+      { area: 'Model Naming', convention: 'stg_ / int_ / fct_ / dim_ / base_ prefixes', example: 'stg_stripe__payments.sql' },
+      { area: 'Schema Tests', convention: 'Every model must have not_null + unique on PK', example: 'See Section 9 of the guide' },
+      { area: 'Documentation', convention: 'Every column in mart models must have a description', example: '_models.yml' },
+      { area: 'Code Review', convention: 'Min 1 approval required; CI must pass', example: 'GitHub branch protection rules' },
+      { area: 'Tags', convention: 'Use tags for criticality and domain', example: 'tag: critical, tag: finance' }
+    ];
+
+    const RESOURCES = [
+      { icon: 'book-open', title: 'dbt Developer Hub', desc: 'Official dbt documentation', link: 'docs.getdbt.com' },
+      { icon: 'message-circle', title: 'dbt Discourse', desc: 'Community Q&A forum', link: 'discourse.getdbt.com' },
+      { icon: 'messages-square', title: 'dbt Slack', desc: 'Real-time community help', link: 'getdbt.com/community/join' },
+      { icon: 'wrench', title: 'dbt_utils', desc: 'Utility macros and tests', link: 'github.com/dbt-labs/dbt-utils' },
+      { icon: 'check-circle-2', title: 'dbt_expectations', desc: 'Extended test suite', link: 'github.com/calogica/dbt-expectations' },
+      { icon: 'zap', title: 'codegen', desc: 'Auto-generate YAML boilerplate', link: 'github.com/dbt-labs/dbt-codegen' },
+      { icon: 'search', title: 'SQLFluff', desc: 'SQL linter for dbt', link: 'sqlfluff.com' },
+      { icon: 'monitor', title: 'dbt Power User', desc: 'VS Code IDE extension', link: 'VS Code Marketplace' }
+    ];
+
+    // ========== STATE ==========
+    const LS_PREFIX = 'dbt_onboarding_';
+    const LS_NAME = 'dbt_onboarding_name';
+
+    function getChecked(id) { return localStorage.getItem(LS_PREFIX + id) === '1'; }
+    function setChecked(id, val) { localStorage.setItem(LS_PREFIX + id, val ? '1' : '0'); }
+    function getName() { return localStorage.getItem(LS_NAME) || ''; }
+    function setName(n) { localStorage.setItem(LS_NAME, n); }
+
+    // ========== RENDER HELPERS ==========
+    function createCheckItem(item, index, opts = {}) {
+      const checked = getChecked(item.id);
+      const row = document.createElement('div');
+      row.className = 'group flex items-start gap-3 bg-white border border-border rounded-xl px-4 py-3 hover:shadow-md transition-shadow cursor-pointer';
+      row.dataset.checkId = item.id;
+
+      let leftContent = '';
+      if (opts.numbered) {
+        leftContent = `<div class="flex items-center gap-3">
+          <span class="flex-shrink-0 w-7 h-7 rounded-lg ${checked ? 'bg-primary' : 'bg-primary-faint'} flex items-center justify-center text-xs font-bold ${checked ? 'text-white' : 'text-primary'} tabular-nums transition-colors">${index + 1}</span>
+          <div class="check-box ${checked ? 'checked' : ''}" data-check-id="${item.id}">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7L5.5 10L11.5 4" stroke="#F97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>`;
+      } else if (item.icon) {
+        leftContent = `<div class="flex items-center gap-3">
+          <i data-lucide="${item.icon}" class="w-4 h-4 text-accent flex-shrink-0"></i>
+          <div class="check-box ${checked ? 'checked' : ''}" data-check-id="${item.id}">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7L5.5 10L11.5 4" stroke="#F97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>`;
+      } else {
+        leftContent = `<div class="check-box ${checked ? 'checked' : ''}" data-check-id="${item.id}">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7L5.5 10L11.5 4" stroke="#F97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>`;
+      }
+
+      let textContent = `<span class="task-text text-sm ${checked ? 'checked' : ''}">${item.text}</span>`;
+      if (item.code) {
+        textContent += ` <span class="code-pill ml-1 inline-block mt-1">${item.code}</span>`;
+      }
+      if (item.badge) {
+        textContent = `<span class="inline-block px-2 py-0.5 rounded-md text-xs font-bold ${item.badge === 'Ongoing' ? 'bg-accent text-white' : 'bg-primary text-white'} mr-2">${item.badge}</span>` + textContent;
+      }
+      if (item.detail) {
+        textContent += `<br/><span class="text-xs text-muted mt-0.5 inline-block">${item.detail}</span>`;
+      }
+
+      row.innerHTML = `${leftContent}<div class="flex-1 pt-0.5">${textContent}</div>`;
+      return row;
+    }
+
+    // ========== RENDER ==========
+    function renderChecklists() {
+      Object.entries(CHECKLIST_DATA).forEach(([groupKey, group]) => {
+        const container = document.getElementById('group-' + groupKey);
+        if (!container) return;
+        container.innerHTML = '';
+        group.items.forEach((item, i) => {
+          container.appendChild(createCheckItem(item, i, { numbered: group.numbered }));
+        });
+      });
+    }
+
+    function renderTimeline() {
+      const container = document.getElementById('timeline-o6p7');
+      if (!container) return;
+      const items = CHECKLIST_DATA['learning-timeline'].items;
+      let html = '<div class="relative pl-10">';
+      html += '<div class="timeline-line" style="left:19px;"></div>';
+      items.forEach((item, i) => {
+        const checked = getChecked(item.id);
+        html += `<div class="relative pb-6 ${i === items.length - 1 ? 'pb-0' : ''}">
+          <div class="absolute left-[-21px] w-10 h-10 rounded-full ${checked ? 'bg-primary' : 'bg-white border-2 border-border'} flex items-center justify-center z-10">
+            ${checked ? '<svg width="16" height="16" viewBox="0 0 14 14" fill="none"><path d="M2.5 7L5.5 10L11.5 4" stroke="#F97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<span class="w-3 h-3 rounded-full bg-primary/20"></span>'}
+          </div>
+          <div class="group flex items-start gap-3 bg-white border border-border rounded-xl px-4 py-3 hover:shadow-md transition-shadow cursor-pointer ml-4" data-check-id="${item.id}">
+            <div class="check-box ${checked ? 'checked' : ''}" data-check-id="${item.id}">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7L5.5 10L11.5 4" stroke="#F97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="flex-1">
+              <span class="inline-block px-2 py-0.5 rounded-md text-xs font-bold ${item.badge === 'Ongoing' ? 'bg-accent text-white' : 'bg-primary text-white'} mr-2">${item.badge}</span>
+              <span class="task-text text-sm ${checked ? 'checked' : ''}">${item.text}</span>
+              <br/><span class="text-xs text-muted mt-0.5 inline-block">${item.detail}</span>
+            </div>
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function renderConventions() {
+      const tbody = document.getElementById('conventions-table-i0j1');
+      tbody.innerHTML = CONVENTIONS.map((c, i) => `
+        <tr class="${i % 2 === 0 ? 'bg-white' : 'bg-surface-bg'}">
+          <td class="px-4 py-3 font-semibold text-primary">${c.area}</td>
+          <td class="px-4 py-3 text-gray-700">${c.convention}</td>
+          <td class="px-4 py-3 text-muted hidden md:table-cell"><code class="code-pill">${c.example}</code></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderResources() {
+      const grid = document.getElementById('resources-grid-k2l3');
+      grid.innerHTML = RESOURCES.map(r => `
+        <div class="bg-white border border-border rounded-xl p-4 hover:shadow-md transition-shadow flex items-start gap-3">
+          <div class="w-10 h-10 bg-primary-faint rounded-lg flex items-center justify-center flex-shrink-0">
+            <i data-lucide="${r.icon}" class="w-5 h-5 text-primary"></i>
+          </div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-primary text-sm">${r.title}</h4>
+            <p class="text-xs text-muted mt-0.5">${r.desc}</p>
+            <span class="text-xs text-accent font-medium mt-1 inline-block">${r.link}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ========== PROGRESS ==========
+    function getAllItemIds() {
+      const ids = [];
+      Object.values(CHECKLIST_DATA).forEach(group => {
+        group.items.forEach(item => ids.push(item.id));
+      });
+      return ids;
+    }
+
+    function getTabItemIds(tab) {
+      const ids = [];
+      Object.values(CHECKLIST_DATA).forEach(group => {
+        if (group.tab === tab) group.items.forEach(item => ids.push(item.id));
+      });
+      return ids;
+    }
+
+    function getGroupItemIds(groupKey) {
+      return CHECKLIST_DATA[groupKey].items.map(i => i.id);
+    }
+
+    function updateProgress() {
+      const allIds = getAllItemIds();
+      const total = allIds.length;
+      const done = allIds.filter(id => getChecked(id)).length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      document.getElementById('progress-text-g7h8').textContent = `${done} / ${total} tasks complete`;
+      document.getElementById('progress-pct-k1l2').textContent = `${pct}%`;
+      document.getElementById('progress-bar-m3n4').style.width = `${pct}%`;
+
+      const ring = document.getElementById('progress-ring-i9j0');
+      const circumference = 2 * Math.PI * 18;
+      ring.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+
+      // Tab badges
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const tab = btn.dataset.tab;
+        const tabIds = getTabItemIds(tab);
+        if (tabIds.length === 0) {
+          btn.querySelector('.tab-count').textContent = '';
+          return;
+        }
+        const tabDone = tabIds.filter(id => getChecked(id)).length;
+        btn.querySelector('.tab-count').textContent = ` ${tabDone}/${tabIds.length}`;
+      });
+
+      // Section complete banners
+      Object.keys(CHECKLIST_DATA).forEach(groupKey => {
+        const ids = getGroupItemIds(groupKey);
+        const allDone = ids.every(id => getChecked(id));
+        const banner = document.getElementById('complete-' + groupKey);
+        if (banner) {
+          if (allDone) banner.classList.remove('hidden');
+          else banner.classList.add('hidden');
+        }
+      });
+    }
+
+    // ========== TABS ==========
+    let activeTab = 'pre-arrival';
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById('tab-' + tab);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.dataset.tab === tab) {
+          btn.classList.add('bg-primary', 'text-white', 'shadow-md');
+          btn.classList.remove('bg-white', 'text-primary', 'hover:bg-primary-faint');
+        } else {
+          btn.classList.remove('bg-primary', 'text-white', 'shadow-md');
+          btn.classList.add('bg-white', 'text-primary', 'hover:bg-primary-faint');
+        }
+      });
+
+      // Re-init Lucide for dynamically rendered icons
+      lucide.createIcons();
+    }
+
+    // ========== CHECKBOX HANDLER ==========
+    function handleCheck(id) {
+      const current = getChecked(id);
+      setChecked(id, !current);
+
+      // Update visual state
+      document.querySelectorAll(`[data-check-id="${id}"]`).forEach(el => {
+        if (el.classList.contains('check-box')) {
+          el.classList.toggle('checked', !current);
+        }
+      });
+
+      // Update task text
+      document.querySelectorAll(`[data-check-id="${id}"]`).forEach(el => {
+        const row = el.closest('[data-check-id]') || el;
+        const textEl = row.querySelector('.task-text');
+        if (textEl) textEl.classList.toggle('checked', !current);
+        // Update step number badge
+        const badge = row.querySelector('.w-7.h-7');
+        if (badge) {
+          badge.classList.toggle('bg-primary', !current);
+          badge.classList.toggle('text-white', !current);
+          badge.classList.toggle('bg-primary-faint', current);
+          badge.classList.toggle('text-primary', current);
+        }
+      });
+
+      updateProgress();
+
+      // Re-render timeline if it's a timeline item
+      if (id.startsWith('lt')) renderTimeline();
+    }
+
+    // ========== NAME ==========
+    function updateName() {
+      const name = getName();
+      // Could update headings if needed
+    }
+
+    // ========== TOAST ==========
+    function showToast(msg) {
+      const toast = document.getElementById('toast-y6z7');
+      document.getElementById('toast-msg-a8b9').textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2500);
+    }
+
+    // ========== INIT ==========
+    function init() {
+      // Restore name
+      const nameInput = document.getElementById('name-input-c3d4');
+      nameInput.value = getName();
+      nameInput.addEventListener('input', function() {
+        setName(this.value);
+        updateName();
+      });
+
+      // Render all
+      renderChecklists();
+      renderTimeline();
+      renderConventions();
+      renderResources();
+
+      // Tab clicks
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          switchTab(this.dataset.tab);
+        });
+      });
+
+      // Checkbox delegation
+      document.addEventListener('click', function(e) {
+        const checkBox = e.target.closest('.check-box');
+        if (checkBox) {
+          handleCheck(checkBox.dataset.checkId);
+          return;
+        }
+        const row = e.target.closest('[data-check-id]');
+        if (row && !e.target.closest('a') && !e.target.closest('button') && !e.target.closest('.code-pill')) {
+          const id = row.dataset.checkId;
+          if (id) handleCheck(id);
+        }
+      });
+
+      // Copy code
+      document.getElementById('copy-code-y5z6').addEventListener('click', function() {
+        const code = `my_dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: your_account
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      role: TRANSFORMER_DEV
+      database: DEV_DB
+      warehouse: COMPUTE_WH
+      schema: "dbt_{{ env_var('DBT_USER') }}"
+      threads: 4`;
+        navigator.clipboard.writeText(code).then(() => showToast('Code copied to clipboard!'));
+      });
+
+      // Reset
+      document.getElementById('reset-btn-u2v3').addEventListener('click', function() {
+        const name = getName() || 'New Hire';
+        if (confirm(`Reset all progress for ${name}?`)) {
+          const allIds = getAllItemIds();
+          allIds.forEach(id => localStorage.removeItem(LS_PREFIX + id));
+          localStorage.removeItem(LS_NAME);
+          location.reload();
+        }
+      });
+
+      // Share
+      document.getElementById('share-btn-w4x5').addEventListener('click', function() {
+        navigator.clipboard.writeText(window.location.href).then(() => showToast('Link copied!'));
+      });
+
+      // Activate first tab
+      switchTab('pre-arrival');
+      updateProgress();
+      updateName();
+    }
+
+    // Init on DOM ready
+    lucide.createIcons();
+    init();
+  </script>
+</body>
+</html>
