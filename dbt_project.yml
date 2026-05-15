@@ -37,6 +37,16 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   dbt_core_demo:
+    example:
+      +materialized: view        
+      +schema: example           
     staging:
-      +materialized: view        # All staging models are views — always
-      +schema: staging           # → ANALYTICS.STAGING (dev: ANALYTICS.dev_zoty_staging)
+      +materialized: view        
+      +schema: staging           
+    intermediate:
+      +materialized: view        
+      +schema: intermdediate          
+    marts:
+      +materialized: table        
+      +schema: marts           
+
